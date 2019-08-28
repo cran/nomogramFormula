@@ -1,0 +1,15 @@
+f2741f0d4ff482402da592fe034fe434 *DESCRIPTION
+7a8105aa534a5f8f29f488271587bfd2 *NAMESPACE
+3b1726067879f55708edb84f1997e8f9 *R/formula_lp.R
+b569f79f2423b6a7e6dc6cf6f1da2e65 *R/formula_prob.R
+ca5d1c959be18006196e286e2038cb77 *R/formula_rd.R
+4c6b266b9f299f828374595344ce066d *R/grapes-equals-grapes.R
+53b87eeddcf6101db9573a78995103a6 *R/grapes-similar-equals-grapes.R
+2511373d54c0c1d6b0e153f547b7bafb *R/inner_Add_Symbol.R
+7c2b5a87602d462d91bccb9f998b6d62 *R/points_cal.R
+123136d58da175c78e266164e10f9f13 *R/prob_cal.R
+6b0aa740de673f460a772345c8bc05b8 *man/formula_lp.Rd
+b3ca8704d2442800d7153ec7e5d6f44d *man/formula_prob.Rd
+d95e48854672f8a529f3a11001955156 *man/formula_rd.Rd
+36140429187826a73cfca977b4322fdc *man/points_cal.Rd
+fe709c9cc54a4350cb640232a40bd9d1 *man/prob_cal.Rd

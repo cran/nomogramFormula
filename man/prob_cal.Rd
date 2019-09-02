@@ -2,25 +2,22 @@
 % Please edit documentation in R/prob_cal.R
 \name{prob_cal}
 \alias{prob_cal}
-\title{calculate Probabilities}
+\title{Calculate Probabilities}
 \usage{
-prob_cal(formula, totalpoints, digits = 6)
+prob_cal(reg, times)
 }
 \arguments{
-\item{formula}{the formula of probabilities and total points}
+\item{reg}{regression results after lrm(), cph() or psm() in 'rms' package.}
 
-\item{totalpoints}{totalpoints after function points_cal}
-
-\item{digits}{default is 6}
+\item{times}{if you want to calculate probabilities for lrm() function, please left times missing.}
 }
 \value{
-probabilities as a dataframe
+lieaner predictors and probabilities as a dataframe
 }
 \description{
-Calculate probabilities.
+Use Survival() function from 'rms' pacakge to calculate probabilities after lrm(), cph() or psm() regression. If you want to calculate lrm() probabilities, please leave linear.predictors be TRUE and times be missing. If you want to calculate cph() probabilites, please leave both linear.predictors and surv be TRUE.
 }
 \examples{
-library(rms)  # needed for nomogram
 set.seed(2018)
 n <-2019
 age <- rnorm(n,60,20)
@@ -31,21 +28,19 @@ time <- sample(50:800,n,replace = TRUE)
 units(time)="day"
 death <- sample(c(1,0,0),n,replace = TRUE)
 df <- data.frame(time,death,age,sex,weight)
-ddist <- datadist(df)
-oldoption <- options(datadist='ddist')
-f <- cph(formula(Surv(time,death)~sex+age+weight),data=df,
-         linear.predictors=TRUE,
-         x=TRUE,y=TRUE,surv=TRUE,time.inc=3)
-surv <- Survival(f)
-nomo <- nomogram(f,
-                 lp=TRUE,
-                 fun=list(function(x) surv(365,x),
-                          function(x) surv(365*2,x)),
-                 funlabel=c("1-Year Survival Prob",
-                            "2-Year Survival Prob"))
-options(oldoption)
-results <- formula_lp(nomo)
-totalpoints <- points_cal(formula = results$formula,lp=f$linear.predictors)
-results_2 <- formula_prob(nomo) 
-prob_cal(formula = results_2$formula,totalpoints =totalpoints)
+
+library(rms) #needed for lrm(), cph() and psm()
+# lrm() function
+f <- lrm(death~sex+age+weight,data=df,
+         linear.predictors = TRUE)
+head(prob_cal(reg = f))
+
+# cph() function
+f <- cph(Surv(time,death)~sex+age+weight,data=df,
+         linear.predictors=TRUE,surv=TRUE)
+head(prob_cal(reg = f,times = c(365,365*2)))
+
+# psm() function
+f <- psm(Surv(time,death)~sex+age+weight,data=df)
+head(prob_cal(reg = f,times = c(365,365*2)))
 }

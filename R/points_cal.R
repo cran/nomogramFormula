@@ -1,4 +1,4 @@
-#' calculate Total Points
+#' Calculate Total Points
 #' @description Calculate total points.
 #' @param formula the formula of total points with raw data or linear predictors
 #' @param rd raw data, which cannot have missing values

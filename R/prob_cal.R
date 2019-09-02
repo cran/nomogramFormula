@@ -1,15 +1,12 @@
-#' @title calculate Probabilities
-#' @description Calculate probabilities.
+#' Calculate Probabilities
+#' @description Use Survival() function from 'rms' pacakge to calculate probabilities after lrm(), cph() or psm() regression. If you want to calculate lrm() probabilities, please leave linear.predictors be TRUE and times be missing. If you want to calculate cph() probabilites, please leave both linear.predictors and surv be TRUE.
+#' @param reg regression results after lrm(), cph() or psm() in 'rms' package.
+#' @param times if you want to calculate probabilities for lrm() function, please left times missing.
 #'
-#' @param formula the formula of probabilities and total points
-#' @param totalpoints totalpoints after function points_cal
-#' @param digits default is 6
-#'
-#' @return probabilities as a dataframe
+#' @return lieaner predictors and probabilities as a dataframe
 #' @export
 #'
 #' @examples
-#' library(rms)  # needed for nomogram
 #' set.seed(2018)
 #' n <-2019
 #' age <- rnorm(n,60,20)
@@ -20,40 +17,45 @@
 #' units(time)="day"
 #' death <- sample(c(1,0,0),n,replace = TRUE)
 #' df <- data.frame(time,death,age,sex,weight)
-#' ddist <- datadist(df)
-#' oldoption <- options(datadist='ddist')
-#' f <- cph(formula(Surv(time,death)~sex+age+weight),data=df,
-#'          linear.predictors=TRUE,
-#'          x=TRUE,y=TRUE,surv=TRUE,time.inc=3)
-#' surv <- Survival(f)
-#' nomo <- nomogram(f,
-#'                  lp=TRUE,
-#'                  fun=list(function(x) surv(365,x),
-#'                           function(x) surv(365*2,x)),
-#'                  funlabel=c("1-Year Survival Prob",
-#'                             "2-Year Survival Prob"))
-#' options(oldoption)
-#' results <- formula_lp(nomo)
-#' totalpoints <- points_cal(formula = results$formula,lp=f$linear.predictors)
-#' results_2 <- formula_prob(nomo) 
-#' prob_cal(formula = results_2$formula,totalpoints =totalpoints)
-prob_cal <- function(formula,totalpoints,digits=6){
-    nomoF.matrix=as.matrix(formula)
-    for (i in 1:nrow(nomoF.matrix)) {
-        if (i==1) score=data.frame(row.names = 1:length(totalpoints))
-        beta_for_x=nomoF.matrix[i,]
-        x_for_beta=totalpoints
-        for (j in 1:length(nomoF.matrix[i,])) {
-            if (is.na(beta_for_x[j])) next(j)
-            if (j==1){
-                each.var.score=(beta_for_x[j])*(x_for_beta^(j-1))
+#' 
+#' library(rms) #needed for lrm(), cph() and psm()
+#' # lrm() function
+#' f <- lrm(death~sex+age+weight,data=df,
+#'          linear.predictors = TRUE)
+#' head(prob_cal(reg = f))
+#' 
+#' # cph() function
+#' f <- cph(Surv(time,death)~sex+age+weight,data=df,
+#'          linear.predictors=TRUE,surv=TRUE)
+#' head(prob_cal(reg = f,times = c(365,365*2)))
+#' 
+#' # psm() function
+#' f <- psm(Surv(time,death)~sex+age+weight,data=df)
+#' head(prob_cal(reg = f,times = c(365,365*2)))
+prob_cal <- function(reg,times){
+    if (!'linear.predictors' %in% names(reg)){
+        stop('linear preditors must be included in reg') 
+    }
+    linear.predictors=reg$linear.predictors
+    if (missing(times)){
+        result=1/(1+exp(-linear.predictors))
+        result=data.frame(result)
+        colnames(result)='Prob'
+    }else{
+        surv <- rms::Survival(reg)
+        for (i in 1:length(times)) {
+            if (i==1){
+                result=surv(times[i],linear.predictors)
+                result=data.frame(result)
+                colnames(result)=paste0('P',times[i])
             }else{
-                each.var.score=each.var.score+(beta_for_x[j])*(x_for_beta^(j-1))
+                result.i=surv(times[i],linear.predictors)
+                result.i=data.frame(result.i)
+                colnames(result.i)=paste0('P',times[i])
+                result=cbind(result,result.i)
             }
         }
-        score=cbind(score,each.var.score)
     }
-    colnames(score)=rownames(formula)
-    score=round(score,digits)
-    return(score)
+    result=cbind(linear.predictors,result)
+    return(result)
 }

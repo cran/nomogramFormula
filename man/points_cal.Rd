@@ -2,7 +2,7 @@
 % Please edit documentation in R/points_cal.R
 \name{points_cal}
 \alias{points_cal}
-\title{calculate Total Points}
+\title{Calculate Total Points}
 \usage{
 points_cal(formula, rd, lp, digits = 6)
 }

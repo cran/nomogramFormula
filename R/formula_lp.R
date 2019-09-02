@@ -1,9 +1,9 @@
 #' @title Explore the Formula of Total Points and Linear Predictors
 #' @description Explore the formula of total points and linear predictors by the best power.
-#'
 #' @param nomogram results of nomogram() function in 'rms' package
 #' @param power power can be automatically selected based on all R2 equal 1
 #' @param digits default is 6
+#' @importFrom stats as.formula lm predict
 #' @return formula is the formula of total points and linear predictors. test is the R2 and RMSE which are used to test the fitted points. diff is difference between nomogram points and fitted points
 #' @export
 #' @examples 

@@ -1,7 +1,5 @@
 #' @title Explore the Formula of Total Points and Raw Data
-#'
 #' @description Explore the formula of total points and raw data by the best power.
-#'
 #' @param nomogram results of nomogram() function in 'rms' package
 #' @param power power can be automatically selected based on all R2 equal 1
 #' @param digits default is 6

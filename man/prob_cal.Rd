@@ -4,12 +4,16 @@
 \alias{prob_cal}
 \title{Calculate Probabilities}
 \usage{
-prob_cal(reg, times)
+prob_cal(reg, times, q, lp)
 }
 \arguments{
 \item{reg}{regression results after lrm(), cph() or psm() in 'rms' package.}
 
 \item{times}{if you want to calculate probabilities for lrm() function, please left times missing.}
+
+\item{q}{quantile, for example 0.5}
+
+\item{lp}{linear predictors}
 }
 \value{
 lieaner predictors and probabilities as a dataframe
@@ -30,6 +34,9 @@ death <- sample(c(1,0,0),n,replace = TRUE)
 df <- data.frame(time,death,age,sex,weight)
 
 library(rms) #needed for lrm(), cph() and psm()
+ddist <- datadist(df)
+oldoption <- options(datadist='ddist')
+
 # lrm() function
 f <- lrm(death~sex+age+weight,data=df,
          linear.predictors = TRUE)

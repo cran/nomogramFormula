@@ -1,7 +1,7 @@
 Package: nomogramFormula
 Type: Package
 Title: Calculate Total Points and Probabilities for Nomogram
-Version: 1.1.0.0
+Version: 1.2.0.0
 Description: 
   A nomogram, which can be carried out in 'rms' package, provides a 
     graphical explanation of a prediction process. However, it is not very easy
@@ -12,17 +12,19 @@ Description:
     formula of total points with raw data and linear predictors respectively by
     polynomial regression. Function points_cal() will help you calculate the 
     total points. prob_cal() can be used to calculate the probabilities after
-    lrm(), cph() or psm() regression.
+    lrm(), cph() or psm() regression. 
+  For more complex condition, interaction or restricted cubic spine, TotalPoints.rms() 
+    can be used.
 Author: Jing Zhang, Zhi Jin
 Maintainer: Jing Zhang<zj391120@163.com>
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-Imports: rms
+Imports: rms, do, Hmisc
 RoxygenNote: 6.1.1
 URL: https://github.com/yikeshu0611/nomogramFormula
 BugReports: https://github.com/yikeshu0611/nomogramFormula/issues
 NeedsCompilation: no
-Packaged: 2019-09-01 13:56:51 UTC; asus
+Packaged: 2020-01-28 12:36:48 UTC; asus
 Repository: CRAN
-Date/Publication: 2019-09-02 14:40:08 UTC
+Date/Publication: 2020-01-28 13:10:02 UTC
